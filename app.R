@@ -9,6 +9,10 @@ library(geosphere)
 library(paletteer)
 library(bslib)
 library(thematic)
+library(googlesheets4)
+
+gs4_deauth()
+
 
 # data <- readRDS("../../../geographic-local-media-classifier/replication_data_geo_newsmapper/analysis_data.rds")
 # 
