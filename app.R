@@ -435,55 +435,25 @@ server <- function(input, output) {
                   rownames = FALSE)
   })
   
-  # Main Map (with zoom limits and no world repetition)
+  # Main Map (simplified - fixed settings)
   output$map <- renderLeaflet({
     if(input$outlet == "") {
-      leaflet(options = leafletOptions(
-        worldCopyJump = FALSE,    # Prevents world repetition
-        maxBoundsViscosity = 1.0  # Makes bounds "sticky"
-      )) %>% 
+      leaflet() %>% 
         addProviderTiles("CartoDB.Positron") %>%
-        setView(lng = 2.5, lat = 55.3, zoom = 6) %>%
-        setMaxBounds(
-          lng1 = -180, lat1 = -85,  # Southwest corner
-          lng2 = 180, lat2 = 85     # Northeast corner
-        )
+        setView(lng = 2.5, lat = 55.3, zoom = 6)
     } else {
       outlet_data <- filtered_data()
       outlet_info <- outlet_metadata()
       
-      # Create base map with options
-      map <- leaflet(options = leafletOptions(
-        worldCopyJump = FALSE,    # Prevents world repetition
-        maxBoundsViscosity = 1.0, # Makes bounds "sticky"
-        minZoom = 2,              # Minimum zoom level
-        maxZoom = 18              # Maximum zoom level
-      )) %>%
+      # Create base map
+      map <- leaflet() %>%
         addProviderTiles("CartoDB.Positron")
       
       if(nrow(outlet_data) > 0) {
-        # Calculate bounds with padding
-        lng_range <- range(outlet_data$Longitude)
-        lat_range <- range(outlet_data$Latitude)
-        
-        # Add padding to bounds (adjust these values as needed)
-        lng_padding <- diff(lng_range) * 0.1  # 10% padding
-        lat_padding <- diff(lat_range) * 0.1  # 10% padding
-        
-        # Set bounds with padding
-        bounds_lng1 <- max(-180, lng_range[1] - lng_padding)
-        bounds_lat1 <- max(-85, lat_range[1] - lat_padding)
-        bounds_lng2 <- min(180, lng_range[2] + lng_padding)
-        bounds_lat2 <- min(85, lat_range[2] + lat_padding)
-        
         map <- map %>%
           fitBounds(
-            lng1 = lng_range[1], lat1 = lat_range[1],
-            lng2 = lng_range[2], lat2 = lat_range[2]
-          ) %>%
-          setMaxBounds(
-            lng1 = bounds_lng1, lat1 = bounds_lat1,
-            lng2 = bounds_lng2, lat2 = bounds_lat2
+            lng1 = min(outlet_data$Longitude), lat1 = min(outlet_data$Latitude),
+            lng2 = max(outlet_data$Longitude), lat2 = max(outlet_data$Latitude)
           )
         
         # Add heatmap (fixed settings)
@@ -529,13 +499,6 @@ server <- function(input, output) {
               )
             )
         }
-      } else {
-        # If no data, set global bounds
-        map <- map %>%
-          setMaxBounds(
-            lng1 = -180, lat1 = -85,
-            lng2 = 180, lat2 = 85
-          )
       }
       
       map
