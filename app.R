@@ -19,14 +19,17 @@ library(thematic)
 # data <- data |> select(column_names <- c("article_text", "value", "Latitude", "Longitude", "LAD24CD", "domain", "resolved_url", "article_author", "owner.x", "date", "constructed_week", "stratum_id", "primary_location.x", "outlet_lat", "outlet_lon", "TITLE", "REGISTERED_ADDRESS", "OFFICE_ADDRESS", "articles_n", "coverage_area_description", "scope", "New_cluster_name", "Area", "Radius", "Districts", "Entropy", "Gini", "MoranI", "DistCV", "Pct10km"))
 # 
 # saveRDS(data, "analysis_data.rds")
+# 
+# data <- readRDS("analysis_data.rds")
+# data <- data |> select(-c(article_text, constructed_week, stratum_id))
+# saveRDS(data, "analysis_data1.rds", compress = "xz")  # Best compression
 
-data <- readRDS("analysis_data.rds")
-data <0
+data <- readRDS('analysis_data1.rds')
 outlet_list <- unique(data$domain)
 
 
 # Data
-data3 <- readRDS("6_CHR_paper_extra/analysis_small.rds")
+data3 <- readRDS("analysis_small.rds")
 
 outlet_info <- googlesheets4::read_sheet(
   ss = "https://docs.google.com/spreadsheets/d/1Y1xGVuFqMzaKnbQAQFgaIdgVJ1Ciik3UV5ougUzxXXE/edit?gid=1038895799#gid=1038895799",
