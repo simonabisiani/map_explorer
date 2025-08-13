@@ -10,14 +10,18 @@ library(paletteer)
 library(bslib)
 library(thematic)
 
-data <- readRDS("geographic-local-media-classifier/replication_data_geo_newsmapper/analysis_data.rds")
+# data <- readRDS("../../../geographic-local-media-classifier/replication_data_geo_newsmapper/analysis_data.rds")
+# 
+# data2 <- googlesheets4::read_sheet(ss = 'https://docs.google.com/spreadsheets/d/1Y1xGVuFqMzaKnbQAQFgaIdgVJ1Ciik3UV5ougUzxXXE/edit?gid=657017351#gid=657017351',
+#                                    sheet = 'Domains_PINF_cluster')
+# 
+# data <- data |> left_join(data2, by = 'domain')
+# data <- data |> select(column_names <- c("article_text", "value", "Latitude", "Longitude", "LAD24CD", "domain", "resolved_url", "article_author", "owner.x", "date", "constructed_week", "stratum_id", "primary_location.x", "outlet_lat", "outlet_lon", "TITLE", "REGISTERED_ADDRESS", "OFFICE_ADDRESS", "articles_n", "coverage_area_description", "scope", "New_cluster_name", "Area", "Radius", "Districts", "Entropy", "Gini", "MoranI", "DistCV", "Pct10km"))
+# 
+# saveRDS(data, "analysis_data.rds")
 
-data2 <- googlesheets4::read_sheet(ss = 'https://docs.google.com/spreadsheets/d/1Y1xGVuFqMzaKnbQAQFgaIdgVJ1Ciik3UV5ougUzxXXE/edit?gid=657017351#gid=657017351',
-                                   sheet = 'Domains_PINF_cluster')
-
-data <- data |> left_join(data2, by = 'domain')
-data <- data |> select(column_names <- c("article_text", "value", "Latitude", "Longitude", "LAD24CD", "domain", "resolved_url", "article_author", "owner.x", "date", "constructed_week", "stratum_id", "primary_location.x", "outlet_lat", "outlet_lon", "TITLE", "REGISTERED_ADDRESS", "OFFICE_ADDRESS", "articles_n", "coverage_area_description", "scope", "New_cluster_name", "Area", "Radius", "Districts", "Entropy", "Gini", "MoranI", "DistCV", "Pct10km"))
-
+data <- readRDS("analysis_data.rds")
+data <0
 outlet_list <- unique(data$domain)
 
 
